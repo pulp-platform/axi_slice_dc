@@ -3,7 +3,7 @@ module dc_data_buffer(clk, rstn, write_pointer, write_data, read_pointer, read_d
     parameter                      DATA_WIDTH = 32;
     parameter                      BUFFER_DEPTH = 8;
 
-    `ifndef PULP3_FPGA_EMUL
+    `ifndef PULP_FPGA_EMUL
         function integer log2(input integer value);
         begin
             value = value - 1;
