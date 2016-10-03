@@ -14,14 +14,18 @@ module dc_data_buffer(clk, rstn, write_pointer, write_data, read_pointer, read_d
     parameter BUFFER_DEPTH = 8;
 
     `ifndef PULP_FPGA_EMUL
-        function integer log2(input integer value);
-        begin
-            value = value - 1;
-            for (log2 = 0; value > 0; log2 = log2 + 1)
-                value = value >> 1;
-        end
+
+        function integer clogb2;
+           input [BUFFER_DEPTH-1:0] value;
+           int unsigned  i;
+           begin
+              clogb2 = 0;
+              for(i = 0; 2**i < value; i = i + 1)
+            clogb2 = i + 1;
+           end
         endfunction
-        `define log2(N) log2(N)
+
+        `define log2(N) clogb2(N)
     `else
         `define log2(N) ((N)<=(1) ? 0 : (N)<=(2) ? 1 : (N)<=(4) ? 2 : (N)<=(8) ? 3 : (N)<=(16) ? 4 : (N)<=(32) ? 5 : (N)<=(64) ? 6 : (N)<=(128) ? 7 : (N)<=(256) ? 8 : (N)<=(512) ? 9 : (N)<=(1024) ? 10 : -1)
     `endif
