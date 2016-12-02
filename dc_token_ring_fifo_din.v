@@ -43,6 +43,7 @@ module dc_token_ring_fifo_din(clk, rstn, data, valid, ready, write_token, read_p
     (
       .clk           ( clk           ),
       .rstn          ( rstn          ),
+      .write_enable  ( write_enable  ),
       .write_pointer ( write_pointer ),
       .write_data    ( data          ),
       .read_pointer  ( read_pointer  ),
