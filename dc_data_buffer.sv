@@ -16,6 +16,7 @@ module dc_data_buffer
 (   
     input  logic                      clk, 
     input  logic                      rstn, 
+    input  logic                      write_enable,
     input  logic  [BUFFER_DEPTH-1:0]  write_pointer, 
     input  logic  [DATA_WIDTH-1:0]    write_data, 
     input  logic  [BUFFER_DEPTH-1:0]  read_pointer, 
@@ -36,7 +37,8 @@ module dc_data_buffer
         if (rstn == 1'b0)
                 data <= '0;
         else
-            data[write_pointer_bin] <= write_data;
+            if (write_enable)
+                data[write_pointer_bin] <= write_data;
     end
 
     assign read_data = data[read_pointer_bin];
