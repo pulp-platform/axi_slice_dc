@@ -132,7 +132,7 @@ module axi_slice_dc_master
       localparam DATA_STRB_WIDTH      = AXI_DATA_WIDTH + AXI_DATA_WIDTH/8;
       localparam DATA_USER_STRB_WIDTH = AXI_DATA_WIDTH + AXI_DATA_WIDTH/8 + AXI_ID_WIDTH;
 
-      localparam DATA_ID_WIDTH        = AXI_DATA_WIDTH + AXI_USER_WIDTH;
+      localparam DATA_ID_WIDTH        = AXI_DATA_WIDTH + AXI_ID_WIDTH;
       localparam DATA_USER_ID_WIDTH   = AXI_DATA_WIDTH + AXI_USER_WIDTH + AXI_ID_WIDTH;
 
       localparam ADDR_ID_WIDTH        = AXI_ADDR_WIDTH + AXI_ID_WIDTH;
