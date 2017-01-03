@@ -26,12 +26,12 @@ module dc_synchronizer (clk, rstn, d_in, d_out);
         if (rstn == 1'b0)
         begin
             d_middle <= RESET_VALUE;
-            d_out <= RESET_VALUE;
+            d_out    <= RESET_VALUE;
         end
         else
         begin
             d_middle <= d_in;
-            d_out <= d_middle;
+            d_out    <= d_middle;
         end
     end
 
