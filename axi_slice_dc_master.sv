@@ -159,7 +159,7 @@ module axi_slice_dc_master
 
       assign data_async_aw[3:0]                                    = axi_slave_aw_cache;
       assign data_async_aw[6:4]                                    = axi_slave_aw_prot;
-      assign data_async_aw[8:7]                                    = axi_slave_aw_lock;
+      assign data_async_aw[7]                                      = axi_slave_aw_lock;
       assign data_async_aw[10:9]                                   = axi_slave_aw_burst;
       assign data_async_aw[13:11]                                  = axi_slave_aw_size;
       assign data_async_aw[21:14]                                  = axi_slave_aw_len;
@@ -168,21 +168,21 @@ module axi_slice_dc_master
       assign data_async_aw[29+AXI_ADDR_WIDTH:30]                   = axi_slave_aw_addr;
       assign data_async_aw[29+ADDR_ID_WIDTH:30+AXI_ADDR_WIDTH]     = axi_slave_aw_id;
       assign data_async_aw[29+ADDR_USER_ID_WIDTH:30+ADDR_ID_WIDTH] = axi_slave_aw_user;
-      assign axi_master_aw_cache                             = data_aw[3:0];
-      assign axi_master_aw_prot                              = data_aw[6:4];
-      assign axi_master_aw_lock                              = data_aw[8:7];
-      assign axi_master_aw_burst                             = data_aw[10:9];
-      assign axi_master_aw_size                              = data_aw[13:11];
-      assign axi_master_aw_len                               = data_aw[21:14];
-      assign axi_master_aw_region                            = data_aw[25:22];
-      assign axi_master_aw_qos                               = data_aw[29:26];
-      assign axi_master_aw_addr                              = data_aw[29+AXI_ADDR_WIDTH:30];
-      assign axi_master_aw_id                                = data_aw[29+ADDR_ID_WIDTH:30+AXI_ADDR_WIDTH];
-      assign axi_master_aw_user                              = data_aw[29+ADDR_USER_ID_WIDTH:30+ADDR_ID_WIDTH];
+      assign axi_master_aw_cache                                   = data_aw[3:0];
+      assign axi_master_aw_prot                                    = data_aw[6:4];
+      assign axi_master_aw_lock                                    = data_aw[7];
+      assign axi_master_aw_burst                                   = data_aw[10:9];
+      assign axi_master_aw_size                                    = data_aw[13:11];
+      assign axi_master_aw_len                                     = data_aw[21:14];
+      assign axi_master_aw_region                                  = data_aw[25:22];
+      assign axi_master_aw_qos                                     = data_aw[29:26];
+      assign axi_master_aw_addr                                    = data_aw[29+AXI_ADDR_WIDTH:30];
+      assign axi_master_aw_id                                      = data_aw[29+ADDR_ID_WIDTH:30+AXI_ADDR_WIDTH];
+      assign axi_master_aw_user                                    = data_aw[29+ADDR_USER_ID_WIDTH:30+ADDR_ID_WIDTH];
 
       assign data_async_ar[3:0]                                    = axi_slave_ar_cache;
       assign data_async_ar[6:4]                                    = axi_slave_ar_prot;
-      assign data_async_ar[8:7]                                    = axi_slave_ar_lock;
+      assign data_async_ar[7]                                      = axi_slave_ar_lock;
       assign data_async_ar[10:9]                                   = axi_slave_ar_burst;
       assign data_async_ar[13:11]                                  = axi_slave_ar_size;
       assign data_async_ar[21:14]                                  = axi_slave_ar_len;
@@ -193,7 +193,7 @@ module axi_slice_dc_master
       assign data_async_ar[29+ADDR_USER_ID_WIDTH:30+ADDR_ID_WIDTH] = axi_slave_ar_user;
       assign axi_master_ar_cache                             = data_ar[3:0];
       assign axi_master_ar_prot                              = data_ar[6:4];
-      assign axi_master_ar_lock                              = data_ar[8:7];
+      assign axi_master_ar_lock                              = data_ar[7];
       assign axi_master_ar_burst                             = data_ar[10:9];
       assign axi_master_ar_size                              = data_ar[13:11];
       assign axi_master_ar_len                               = data_ar[21:14];
