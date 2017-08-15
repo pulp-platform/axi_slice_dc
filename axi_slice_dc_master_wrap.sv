@@ -174,6 +174,7 @@ module axi_slice_dc_master_wrap
       .axi_master_b_user        ( axi_master.b_user                       )
       );
 
+/*
 `ifndef SYNTHESIS
     Axi4PC #(
         .ADDR_WIDTH   ( AXI_ADDR_WIDTH ),
@@ -238,5 +239,5 @@ module axi_slice_dc_master_wrap
     );
 
 `endif
-
+*/
 endmodule
