@@ -160,6 +160,7 @@ module axi_slice_dc_slave_wrap
 `ifndef SYNTHESIS
 
     Axi4PC #(
+        .ADDR_WIDTH( AXI_ADDR_WIDTH ),
         .DATA_WIDTH(AXI_DATA_WIDTH),
         .WID_WIDTH(AXI_ID_WIDTH),
         .RID_WIDTH(AXI_ID_WIDTH),
