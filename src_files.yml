@@ -10,4 +10,5 @@ axi_slice_dc:
     dc_token_ring.v,
     axi_slice_dc_master_wrap.sv,
     axi_slice_dc_slave_wrap.sv,
+    axi_cdc.sv,
   ]
