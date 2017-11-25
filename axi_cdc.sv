@@ -53,9 +53,7 @@ module axi_cdc #(
         .AXI_USER_WIDTH  ( AXI_USER_WIDTH     ),
         .AXI_ID_WIDTH    ( AXI_ID_WIDTH       ),
         .BUFFER_WIDTH    ( AXI_BUFFER_WIDTH   )
-    )
-    i_axi_slave
-    (
+    ) i_axi_slave (
         .clk_i              ( clk_slave_i     ),
         .rst_ni             ( rst_slave_ni    ),
         .isolate_i          ( isolate_slave_i ),
@@ -72,9 +70,7 @@ module axi_cdc #(
         .AXI_USER_WIDTH  ( AXI_USER_WIDTH     ),
         .AXI_ID_WIDTH    ( AXI_ID_WIDTH       ),
         .BUFFER_WIDTH    ( AXI_BUFFER_WIDTH   )
-    )
-    i_axi_master
-    (
+    ) i_axi_master (
         .clk_i              ( clk_master_i          ),
         .rst_ni             ( rst_master_ni         ),
         .isolate_i          ( isolate_master_i      ),
