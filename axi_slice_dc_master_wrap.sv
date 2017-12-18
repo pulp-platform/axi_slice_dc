@@ -35,6 +35,7 @@ module axi_slice_dc_master_wrap
    (
     input logic          clk_i,
     input logic          rst_ni,
+    input logic          test_cgbypass_i,
 
     input  logic         clock_down_i,
     input  logic         isolate_i,
@@ -75,6 +76,7 @@ module axi_slice_dc_master_wrap
       .clk_i                    ( clk_i                                   ),
       .rst_ni                   ( rst_ni                                  ),
 
+      .test_cgbypass_i          ( test_cgbypass_i                         ),
       .axi_slave_aw_addr        ( axi_slave_async.aw_addr                 ),
       .axi_slave_aw_prot        ( axi_slave_async.aw_prot                 ),
       .axi_slave_aw_region      ( axi_slave_async.aw_region               ),

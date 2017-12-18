@@ -28,6 +28,8 @@ module axi_cdc #(
     AXI_BUS.Slave           axi_slave,              // AXI Slave in
     input  logic            isolate_slave_i,        // Isolate Slave in
 
+    input logic             test_cgbypass_i,
+
     input  logic            clk_master_i,           // Clock Master
     input  logic            rst_master_ni,          // Reset Master
     AXI_BUS.Master          axi_master,             // AXI Master
@@ -56,6 +58,7 @@ module axi_cdc #(
     ) i_axi_slave (
         .clk_i              ( clk_slave_i     ),
         .rst_ni             ( rst_slave_ni    ),
+        .test_cgbypass_i    ( test_cgbypass_i ),
         .isolate_i          ( isolate_slave_i ),
         .axi_slave          ( axi_slave       ),
         .axi_master_async   ( axi_async       )
@@ -73,6 +76,7 @@ module axi_cdc #(
     ) i_axi_master (
         .clk_i              ( clk_master_i          ),
         .rst_ni             ( rst_master_ni         ),
+        .test_cgbypass_i    ( test_cgbypass_i       ),
         .isolate_i          ( isolate_master_i      ),
         .clock_down_i       ( clock_down_master_i   ),
         .incoming_req_o     ( incoming_req_master_o ),
