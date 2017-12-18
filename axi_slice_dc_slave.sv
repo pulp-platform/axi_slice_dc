@@ -19,6 +19,9 @@ module axi_slice_dc_slave
 (
     input logic                         clk_i,
     input logic                         rst_ni,
+
+    input  logic                        test_cgbypass_i,
+
     input  logic                        axi_slave_aw_valid,
     input  logic [AXI_ADDR_WIDTH-1:0]   axi_slave_aw_addr,
     input  logic [2:0]                  axi_slave_aw_prot,
@@ -152,9 +155,15 @@ module axi_slice_dc_slave
       logic      [WIDTH_FIFO_W-1:0]   data_w;
       logic      [WIDTH_FIFO_W-1:0]   data_async_w;
       logic      [WIDTH_FIFO_R-1:0]   data_r;
+      logic      [WIDTH_FIFO_R-1:0]   data_r_dc;
       logic      [WIDTH_FIFO_R-1:0]   data_async_r;
       logic      [WIDTH_FIFO_B-1:0]   data_b;
+      logic      [WIDTH_FIFO_B-1:0]   data_b_dc;
       logic      [WIDTH_FIFO_B-1:0]   data_async_b;
+      logic                           s_slave_b_valid;
+      logic                           s_slave_b_ready;
+      logic                           s_slave_r_valid;
+      logic                           s_slave_r_ready;
 
       assign data_aw[3:0]                                    = axi_slave_aw_cache;
       assign data_aw[6:4]                                    = axi_slave_aw_prot;
@@ -278,12 +287,29 @@ module axi_slice_dc_slave
       (
         .clk          ( clk_i                    ),
         .rstn         ( rst_ni                   ),
-        .data         ( data_r                   ),
-        .valid        ( axi_slave_r_valid        ),
-        .ready        ( axi_slave_r_ready        ),
+        .data         ( data_r_dc                ),
+        .valid        ( s_slave_r_valid          ),
+        .ready        ( s_slave_r_ready          ),
         .write_token  ( axi_master_r_writetoken  ),
         .read_pointer ( axi_master_r_readpointer ),
         .data_async   ( data_async_r             )
+      );
+
+      generic_fifo #(
+         .DATA_WIDTH ( WIDTH_FIFO_R ),
+         .DATA_DEPTH ( 2            )
+      )
+      buffer_rchan
+      (
+         .clk            ( clk_i             ),
+         .rst_n          ( rst_ni            ),
+         .data_i         ( data_r_dc         ),
+         .valid_i        ( s_slave_r_valid   ),
+         .grant_o        ( s_slave_r_ready   ),
+         .data_o         ( data_r            ),
+         .valid_o        ( axi_slave_r_valid ),
+         .grant_i        ( axi_slave_r_ready ),
+         .test_mode_i    ( test_cgbypass_i   )
       );
 
       dc_token_ring_fifo_dout #(WIDTH_FIFO_B,BUFFER_WIDTH)
@@ -291,13 +317,31 @@ module axi_slice_dc_slave
       (
         .clk          ( clk_i                    ),
         .rstn         ( rst_ni                   ),
-        .data         ( data_b                   ),
-        .valid        ( axi_slave_b_valid        ),
-        .ready        ( axi_slave_b_ready        ),
+        .data         ( data_b_dc                ),
+        .valid        ( s_slave_b_valid          ),
+        .ready        ( s_slave_b_ready          ),
         .write_token  ( axi_master_b_writetoken  ),
         .read_pointer ( axi_master_b_readpointer ),
         .data_async   ( data_async_b             )
       );
+
+      generic_fifo #(
+         .DATA_WIDTH ( WIDTH_FIFO_B ),
+         .DATA_DEPTH ( 2            )
+      )
+      buffer_bchan
+      (
+         .clk            ( clk_i             ),
+         .rst_n          ( rst_ni            ),
+         .data_i         ( data_b_dc         ),
+         .valid_i        ( s_slave_b_valid   ),
+         .grant_o        ( s_slave_b_ready   ),
+         .data_o         ( data_b            ),
+         .valid_o        ( axi_slave_b_valid ),
+         .grant_i        ( axi_slave_b_ready ),
+         .test_mode_i    ( test_cgbypass_i   )
+      );
+
 
 endmodule
 
