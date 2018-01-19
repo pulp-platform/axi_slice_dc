@@ -1,4 +1,4 @@
-// Copyright 2015 ETH Zurich and University of Bologna.
+// Copyright 2015-2018 ETH Zurich and University of Bologna.
 // Copyright and related rights are licensed under the Solderpad Hardware
 // License, Version 0.51 (the “License”); you may not use this file except in
 // compliance with the License.  You may obtain a copy of the License at
@@ -268,8 +268,8 @@ module axi_slice_dc_master
          .valid_i        ( s_slave_aw_valid   ),
          .grant_o        ( s_slave_aw_ready   ),
          .data_o         ( data_aw            ),
-         .valid_o        ( axi_slave_aw_valid ),
-         .grant_i        ( axi_slave_aw_ready ),
+         .valid_o        ( axi_master_aw_valid ),
+         .grant_i        ( axi_master_aw_ready ),
          .test_mode_i    ( test_cgbypass_i    )
       );
 
@@ -298,8 +298,8 @@ module axi_slice_dc_master
          .valid_i        ( s_slave_ar_valid   ),
          .grant_o        ( s_slave_ar_ready   ),
          .data_o         ( data_ar            ),
-         .valid_o        ( axi_slave_ar_valid ),
-         .grant_i        ( axi_slave_ar_ready ),
+         .valid_o        ( axi_master_ar_valid ),
+         .grant_i        ( axi_master_ar_ready ),
          .test_mode_i    ( test_cgbypass_i    )
       );
 
@@ -328,8 +328,8 @@ module axi_slice_dc_master
          .valid_i        ( s_slave_w_valid   ),
          .grant_o        ( s_slave_w_ready   ),
          .data_o         ( data_w            ),
-         .valid_o        ( axi_slave_w_valid ),
-         .grant_i        ( axi_slave_w_ready ),
+         .valid_o        ( axi_master_w_valid ),
+         .grant_i        ( axi_master_w_ready ),
          .test_mode_i    ( test_cgbypass_i   )
       );
 
