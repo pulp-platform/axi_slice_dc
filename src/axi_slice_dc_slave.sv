@@ -189,9 +189,6 @@ module axi_slice_dc_slave
       assign axi_master_aw_id                                = data_async_aw[29+ADDR_ID_WIDTH:30+AXI_ADDR_WIDTH];
       assign axi_master_aw_user                              = data_async_aw[29+ADDR_USER_ID_WIDTH:30+ADDR_ID_WIDTH];
 
-
-      //assign data_ar = {  axi_slave_ar_user , axi_slave_ar_id , axi_slave_ar_addr , axi_slave_ar_qos , axi_slave_ar_region , axi_slave_ar_len , axi_slave_ar_size , axi_slave_ar_burst , axi_slave_ar_lock , axi_slave_ar_prot, axi_slave_ar_cache };
-
       assign data_ar[3:0]                                    = axi_slave_ar_cache;
       assign data_ar[6:4]                                    = axi_slave_ar_prot;
       assign data_ar[7]                                      = axi_slave_ar_lock;
@@ -295,21 +292,19 @@ module axi_slice_dc_slave
         .data_async   ( data_async_r             )
       );
 
-      generic_fifo #(
-         .DATA_WIDTH ( WIDTH_FIFO_R ),
-         .DATA_DEPTH ( 2            )
-      )
-      buffer_rchan
-      (
-         .clk            ( clk_i             ),
-         .rst_n          ( rst_ni            ),
-         .data_i         ( data_r_dc         ),
-         .valid_i        ( s_slave_r_valid   ),
-         .grant_o        ( s_slave_r_ready   ),
-         .data_o         ( data_r            ),
-         .valid_o        ( axi_slave_r_valid ),
-         .grant_i        ( axi_slave_r_ready ),
-         .test_mode_i    ( test_cgbypass_i   )
+      axi_single_slice #(
+         .DATA_WIDTH   ( WIDTH_FIFO_R ),
+         .BUFFER_DEPTH ( 1            )
+      ) buffer_rchan (
+        .clk_i      ( clk_i             ),
+        .rst_ni     ( rst_ni            ),
+        .testmode_i ( test_cgbypass_i   ),
+        .valid_i    ( s_slave_r_valid   ),
+        .ready_o    ( s_slave_r_ready   ),
+        .data_i     ( data_r_dc         ),
+        .ready_i    ( axi_slave_r_ready ),
+        .valid_o    ( axi_slave_r_valid ),
+        .data_o     ( data_r            )
       );
 
       dc_token_ring_fifo_dout #(WIDTH_FIFO_B,BUFFER_WIDTH)
@@ -325,21 +320,19 @@ module axi_slice_dc_slave
         .data_async   ( data_async_b             )
       );
 
-      generic_fifo #(
-         .DATA_WIDTH ( WIDTH_FIFO_B ),
-         .DATA_DEPTH ( 2            )
-      )
-      buffer_bchan
-      (
-         .clk            ( clk_i             ),
-         .rst_n          ( rst_ni            ),
-         .data_i         ( data_b_dc         ),
-         .valid_i        ( s_slave_b_valid   ),
-         .grant_o        ( s_slave_b_ready   ),
-         .data_o         ( data_b            ),
-         .valid_o        ( axi_slave_b_valid ),
-         .grant_i        ( axi_slave_b_ready ),
-         .test_mode_i    ( test_cgbypass_i   )
+      axi_single_slice #(
+         .DATA_WIDTH   ( WIDTH_FIFO_B ),
+         .BUFFER_DEPTH ( 1            )
+      ) buffer_bchan (
+        .clk_i      ( clk_i             ),
+        .rst_ni     ( rst_ni            ),
+        .testmode_i ( test_cgbypass_i   ),
+        .valid_i    ( s_slave_b_valid   ),
+        .ready_o    ( s_slave_b_ready   ),
+        .data_i     ( data_b_dc         ),
+        .ready_i    ( axi_slave_b_ready ),
+        .valid_o    ( axi_slave_b_valid ),
+        .data_o     ( data_b            )
       );
 
 

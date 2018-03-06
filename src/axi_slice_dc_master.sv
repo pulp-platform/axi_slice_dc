@@ -215,7 +215,6 @@ module axi_slice_dc_master
       assign axi_master_ar_id                                = data_ar[29+ADDR_ID_WIDTH:30+AXI_ADDR_WIDTH];
       assign axi_master_ar_user                              = data_ar[29+ADDR_USER_ID_WIDTH:30+ADDR_ID_WIDTH];
 
-
       assign data_r[0]                                    = axi_master_r_last;
       assign data_r[2:1]                                  = axi_master_r_resp;
       assign data_r[2+AXI_DATA_WIDTH:3]                   = axi_master_r_data;
@@ -256,21 +255,19 @@ module axi_slice_dc_master
         .data_async   ( data_async_aw            )
       );
 
-      generic_fifo #(
-         .DATA_WIDTH ( WIDTH_FIFO_AW ),
-         .DATA_DEPTH ( 2             )
-      )
-      buffer_awchan
-      (
-         .clk            ( clk_i              ),
-         .rst_n          ( rst_ni             ),
-         .data_i         ( data_aw_dc         ),
-         .valid_i        ( s_slave_aw_valid   ),
-         .grant_o        ( s_slave_aw_ready   ),
-         .data_o         ( data_aw            ),
-         .valid_o        ( axi_master_aw_valid ),
-         .grant_i        ( axi_master_aw_ready ),
-         .test_mode_i    ( test_cgbypass_i    )
+      axi_single_slice #(
+         .DATA_WIDTH   ( WIDTH_FIFO_AW ),
+         .BUFFER_DEPTH ( 1            )
+      ) buffer_awchan (
+        .clk_i      ( clk_i               ),
+        .rst_ni     ( rst_ni              ),
+        .testmode_i ( test_cgbypass_i     ),
+        .valid_i    ( s_slave_aw_valid    ),
+        .ready_o    ( s_slave_aw_ready    ),
+        .data_i     ( data_aw_dc          ),
+        .ready_i    ( axi_master_aw_ready ),
+        .valid_o    ( axi_master_aw_valid ),
+        .data_o     ( data_aw             )
       );
 
       dc_token_ring_fifo_dout #(WIDTH_FIFO_AR,BUFFER_WIDTH)
@@ -286,21 +283,19 @@ module axi_slice_dc_master
         .data_async   ( data_async_ar            )
       );
 
-      generic_fifo #(
-         .DATA_WIDTH ( WIDTH_FIFO_AR ),
-         .DATA_DEPTH ( 2             )
-      )
-      buffer_archan
-      (
-         .clk            ( clk_i              ),
-         .rst_n          ( rst_ni             ),
-         .data_i         ( data_ar_dc         ),
-         .valid_i        ( s_slave_ar_valid   ),
-         .grant_o        ( s_slave_ar_ready   ),
-         .data_o         ( data_ar            ),
-         .valid_o        ( axi_master_ar_valid ),
-         .grant_i        ( axi_master_ar_ready ),
-         .test_mode_i    ( test_cgbypass_i    )
+      axi_single_slice #(
+         .DATA_WIDTH   ( WIDTH_FIFO_AR ),
+         .BUFFER_DEPTH ( 1             )
+      ) buffer_archan (
+        .clk_i      ( clk_i               ),
+        .rst_ni     ( rst_ni              ),
+        .testmode_i ( test_cgbypass_i     ),
+        .valid_i    ( s_slave_ar_valid    ),
+        .ready_o    ( s_slave_ar_ready    ),
+        .data_i     ( data_ar_dc          ),
+        .ready_i    ( axi_master_ar_ready ),
+        .valid_o    ( axi_master_ar_valid ),
+        .data_o     ( data_ar             )
       );
 
       dc_token_ring_fifo_dout #(WIDTH_FIFO_W,BUFFER_WIDTH)
@@ -316,21 +311,19 @@ module axi_slice_dc_master
         .data_async   ( data_async_w            )
       );
 
-      generic_fifo #(
-         .DATA_WIDTH ( WIDTH_FIFO_W ),
-         .DATA_DEPTH ( 2            )
-      )
-      buffer_wchan
-      (
-         .clk            ( clk_i             ),
-         .rst_n          ( rst_ni            ),
-         .data_i         ( data_w_dc         ),
-         .valid_i        ( s_slave_w_valid   ),
-         .grant_o        ( s_slave_w_ready   ),
-         .data_o         ( data_w            ),
-         .valid_o        ( axi_master_w_valid ),
-         .grant_i        ( axi_master_w_ready ),
-         .test_mode_i    ( test_cgbypass_i   )
+      axi_single_slice #(
+         .DATA_WIDTH   ( WIDTH_FIFO_W ),
+         .BUFFER_DEPTH ( 1            )
+      ) buffer_wchan (
+        .clk_i      ( clk_i              ),
+        .rst_ni     ( rst_ni             ),
+        .testmode_i ( test_cgbypass_i    ),
+        .valid_i    ( s_slave_w_valid    ),
+        .ready_o    ( s_slave_w_ready    ),
+        .data_i     ( data_w_dc          ),
+        .ready_i    ( axi_master_w_ready ),
+        .valid_o    ( axi_master_w_valid ),
+        .data_o     ( data_w             )
       );
 
       dc_token_ring_fifo_din #(WIDTH_FIFO_R,BUFFER_WIDTH)
