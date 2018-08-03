@@ -147,7 +147,7 @@ module axi_slice_dc_slave
       localparam WIDTH_FIFO_W         = 1+DATA_USER_STRB_WIDTH;
       localparam WIDTH_FIFO_R         = 3+DATA_USER_ID_WIDTH;
       localparam WIDTH_FIFO_B         = 2+USER_ID_WIDTH;
-
+      
       logic      [WIDTH_FIFO_AW-1:0]  data_aw;
       logic      [WIDTH_FIFO_AW-1:0]  data_async_aw;
       logic      [WIDTH_FIFO_AR-1:0]  data_ar;
@@ -164,10 +164,11 @@ module axi_slice_dc_slave
       logic                           s_slave_b_ready;
       logic                           s_slave_r_valid;
       logic                           s_slave_r_ready;
-
+      
       assign data_aw[3:0]                                    = axi_slave_aw_cache;
       assign data_aw[6:4]                                    = axi_slave_aw_prot;
       assign data_aw[7]                                      = axi_slave_aw_lock;
+      assign data_aw[8]                                      = 1'b0;
       assign data_aw[10:9]                                   = axi_slave_aw_burst;
       assign data_aw[13:11]                                  = axi_slave_aw_size;
       assign data_aw[21:14]                                  = axi_slave_aw_len;
@@ -176,7 +177,7 @@ module axi_slice_dc_slave
       assign data_aw[29+AXI_ADDR_WIDTH:30]                   = axi_slave_aw_addr;
       assign data_aw[29+ADDR_ID_WIDTH:30+AXI_ADDR_WIDTH]     = axi_slave_aw_id;
       assign data_aw[29+ADDR_USER_ID_WIDTH:30+ADDR_ID_WIDTH] = axi_slave_aw_user;
-
+      
       assign axi_master_aw_cache                             = data_async_aw[3:0];
       assign axi_master_aw_prot                              = data_async_aw[6:4];
       assign axi_master_aw_lock                              = data_async_aw[7];
@@ -188,13 +189,13 @@ module axi_slice_dc_slave
       assign axi_master_aw_addr                              = data_async_aw[29+AXI_ADDR_WIDTH:30];
       assign axi_master_aw_id                                = data_async_aw[29+ADDR_ID_WIDTH:30+AXI_ADDR_WIDTH];
       assign axi_master_aw_user                              = data_async_aw[29+ADDR_USER_ID_WIDTH:30+ADDR_ID_WIDTH];
-
-
+      
       //assign data_ar = {  axi_slave_ar_user , axi_slave_ar_id , axi_slave_ar_addr , axi_slave_ar_qos , axi_slave_ar_region , axi_slave_ar_len , axi_slave_ar_size , axi_slave_ar_burst , axi_slave_ar_lock , axi_slave_ar_prot, axi_slave_ar_cache };
-
+      
       assign data_ar[3:0]                                    = axi_slave_ar_cache;
       assign data_ar[6:4]                                    = axi_slave_ar_prot;
       assign data_ar[7]                                      = axi_slave_ar_lock;
+      assign data_ar[8]                                      = 1'b0;
       assign data_ar[10:9]                                   = axi_slave_ar_burst;
       assign data_ar[13:11]                                  = axi_slave_ar_size;
       assign data_ar[21:14]                                  = axi_slave_ar_len;
@@ -214,8 +215,7 @@ module axi_slice_dc_slave
       assign axi_master_ar_addr                              = data_async_ar[29+AXI_ADDR_WIDTH:30];
       assign axi_master_ar_id                                = data_async_ar[29+ADDR_ID_WIDTH:30+AXI_ADDR_WIDTH];
       assign axi_master_ar_user                              = data_async_ar[29+ADDR_USER_ID_WIDTH:30+ADDR_ID_WIDTH];
-
-
+      
       assign data_async_r[0]                                    = axi_master_r_last;
       assign data_async_r[2:1]                                  = axi_master_r_resp;
       assign data_async_r[2+AXI_DATA_WIDTH:3]                   = axi_master_r_data;
@@ -226,23 +226,23 @@ module axi_slice_dc_slave
       assign axi_slave_r_data                                   = data_r[2+AXI_DATA_WIDTH:3];
       assign axi_slave_r_id                                     = data_r[2+DATA_ID_WIDTH:3+AXI_DATA_WIDTH];
       assign axi_slave_r_user                                   = data_r[2+DATA_USER_ID_WIDTH:3+DATA_ID_WIDTH];
-
+      
       assign data_w[0]                                      = axi_slave_w_last;
       assign data_w[AXI_DATA_WIDTH:1]                       = axi_slave_w_data;
       assign data_w[DATA_STRB_WIDTH:1+AXI_DATA_WIDTH]       = axi_slave_w_strb;
-      assign data_w[DATA_USER_STRB_WIDTH:1+DATA_STRB_WIDTH] = axi_slave_w_user;   // LHS  [:73]                   RHS --> AXI_USER_WIDTH = 6 bit
+      assign data_w[DATA_USER_STRB_WIDTH:1+DATA_STRB_WIDTH] = axi_slave_w_user;   // LHS  [:73]              RHS --> AXI_USER_WIDTH = 6 bit
       assign axi_master_w_last                              = data_async_w[0];
       assign axi_master_w_data                              = data_async_w[AXI_DATA_WIDTH:1];
       assign axi_master_w_strb                              = data_async_w[DATA_STRB_WIDTH:1+AXI_DATA_WIDTH];
       assign axi_master_w_user                              = data_async_w[DATA_USER_STRB_WIDTH:1+DATA_STRB_WIDTH];
-
+      
       assign data_async_b[1:0]                              = axi_master_b_resp;
       assign data_async_b[1+AXI_ID_WIDTH:2]                 = axi_master_b_id;
       assign data_async_b[1+USER_ID_WIDTH:2+AXI_ID_WIDTH]   = axi_master_b_user;
       assign axi_slave_b_resp                               = data_b[1:0];
       assign axi_slave_b_id                                 = data_b[1+AXI_ID_WIDTH:2];
       assign axi_slave_b_user                               = data_b[1+USER_ID_WIDTH:2+AXI_ID_WIDTH];
-
+      
       dc_token_ring_fifo_din #(WIDTH_FIFO_AW,BUFFER_WIDTH)
       dc_awchan
       (
