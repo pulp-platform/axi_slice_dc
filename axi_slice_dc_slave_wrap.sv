@@ -33,11 +33,19 @@ module axi_slice_dc_slave_wrap
    logic s_r_valid;
    logic s_r_ready;
 
+   logic s_aw_ready;
+   logic s_ar_ready;
+   logic s_w_ready;
+
    assign axi_slave.b_valid = isolate_i ? 1'b0 : s_b_valid;
    assign s_b_ready = isolate_i ? 1'b1 : axi_slave.b_ready;
 
    assign axi_slave.r_valid = isolate_i ? 1'b0 : s_r_valid;
    assign s_r_ready = isolate_i ? 1'b1 : axi_slave.r_ready;
+
+   assign axi_slave.aw_ready = isolate_i ? 1'b0 : s_aw_ready;
+   assign axi_slave.ar_ready = isolate_i ? 1'b0 : s_ar_ready;
+   assign axi_slave.w_ready  = isolate_i ? 1'b0 : s_w_ready;
 
    axi_slice_dc_slave
    #(
@@ -66,7 +74,7 @@ module axi_slice_dc_slave_wrap
       .axi_slave_aw_qos(axi_slave.aw_qos),
       .axi_slave_aw_id(axi_slave.aw_id[AXI_ID_WIDTH-1:0]),
       .axi_slave_aw_user(axi_slave.aw_user),
-      .axi_slave_aw_ready(axi_slave.aw_ready),
+      .axi_slave_aw_ready(s_aw_ready),
 
       .axi_slave_ar_valid(axi_slave.ar_valid),
       .axi_slave_ar_addr(axi_slave.ar_addr),
@@ -80,14 +88,14 @@ module axi_slice_dc_slave_wrap
       .axi_slave_ar_qos(axi_slave.ar_qos),
       .axi_slave_ar_id(axi_slave.ar_id[AXI_ID_WIDTH-1:0]),
       .axi_slave_ar_user(axi_slave.ar_user),
-      .axi_slave_ar_ready(axi_slave.ar_ready),
+      .axi_slave_ar_ready(s_ar_ready),
 
       .axi_slave_w_valid(axi_slave.w_valid),
       .axi_slave_w_data(axi_slave.w_data),
       .axi_slave_w_strb(axi_slave.w_strb),
       .axi_slave_w_user(axi_slave.w_user),
       .axi_slave_w_last(axi_slave.w_last),
-      .axi_slave_w_ready(axi_slave.w_ready),
+      .axi_slave_w_ready(s_w_ready),
 
       .axi_slave_r_valid(s_r_valid),
       .axi_slave_r_data(axi_slave.r_data),
