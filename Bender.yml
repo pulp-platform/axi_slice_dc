@@ -3,8 +3,8 @@ package:
   authors: ["Davide Rossi <davide.rossi@unibo.it>"]
 
 dependencies:
-  axi: { git: "git@iis-git.ee.ethz.ch:sasa/axi.git", rev: master }
-  axi_slice: { git: "git@iis-git.ee.ethz.ch:sasa/axi_slice.git", version: 1.1.2}
+  axi: { git: "https://github.com/pulp-platform/axi.git", version: 0.4.3  }
+  axi_slice: { git: "https://github.com/pulp-platform/axi_slice", version: 1.1.3 }
 
 sources:
   - src/axi_slice_dc_master.sv

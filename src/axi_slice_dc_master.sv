@@ -172,6 +172,7 @@ module axi_slice_dc_master
       assign data_async_aw[3:0]                                    = axi_slave_aw_cache;
       assign data_async_aw[6:4]                                    = axi_slave_aw_prot;
       assign data_async_aw[7]                                      = axi_slave_aw_lock;
+      assign data_async_aw[8]                                      = 1'b0;
       assign data_async_aw[10:9]                                   = axi_slave_aw_burst;
       assign data_async_aw[13:11]                                  = axi_slave_aw_size;
       assign data_async_aw[21:14]                                  = axi_slave_aw_len;
@@ -195,6 +196,7 @@ module axi_slice_dc_master
       assign data_async_ar[3:0]                                    = axi_slave_ar_cache;
       assign data_async_ar[6:4]                                    = axi_slave_ar_prot;
       assign data_async_ar[7]                                      = axi_slave_ar_lock;
+      assign data_async_ar[8]                                      = 1'b0;
       assign data_async_ar[10:9]                                   = axi_slave_ar_burst;
       assign data_async_ar[13:11]                                  = axi_slave_ar_size;
       assign data_async_ar[21:14]                                  = axi_slave_ar_len;

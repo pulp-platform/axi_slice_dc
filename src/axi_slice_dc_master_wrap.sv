@@ -57,12 +57,14 @@ module axi_slice_dc_master_wrap
    logic s_ar_valid;
    logic s_aw_ready;
    logic s_ar_ready;
+   logic s_w_ready;
    logic s_r_ready;
    logic s_b_ready;
 
-   assign incoming_req_o = s_aw_valid | s_ar_valid;
+   assign incoming_req_o = s_aw_valid | s_ar_valid | s_w_valid;
    assign s_aw_ready = ~clock_down_i & axi_master.aw_ready;
    assign s_ar_ready = ~clock_down_i & axi_master.ar_ready;
+   assign s_w_ready = ~clock_down_i & axi_master.w_ready;
    assign axi_master.aw_valid = ~isolate_i & ~clock_down_i & s_aw_valid;
    assign axi_master.w_valid  = ~isolate_i & ~clock_down_i & s_w_valid;
    assign axi_master.ar_valid = ~isolate_i & ~clock_down_i & s_ar_valid;
@@ -161,7 +163,7 @@ module axi_slice_dc_master_wrap
       .axi_master_ar_user       ( axi_master.ar_user                      ),
 
       .axi_master_w_valid       ( s_w_valid                               ),
-      .axi_master_w_ready       ( axi_master.w_ready                      ),
+      .axi_master_w_ready       ( s_w_ready                               ),
       .axi_master_w_data        ( axi_master.w_data                       ),
       .axi_master_w_strb        ( axi_master.w_strb                       ),
       .axi_master_w_user        ( axi_master.w_user                       ),

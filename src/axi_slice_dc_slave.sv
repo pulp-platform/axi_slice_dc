@@ -168,6 +168,7 @@ module axi_slice_dc_slave
       assign data_aw[3:0]                                    = axi_slave_aw_cache;
       assign data_aw[6:4]                                    = axi_slave_aw_prot;
       assign data_aw[7]                                      = axi_slave_aw_lock;
+      assign data_aw[8]                                      = 1'b0;
       assign data_aw[10:9]                                   = axi_slave_aw_burst;
       assign data_aw[13:11]                                  = axi_slave_aw_size;
       assign data_aw[21:14]                                  = axi_slave_aw_len;
@@ -192,6 +193,7 @@ module axi_slice_dc_slave
       assign data_ar[3:0]                                    = axi_slave_ar_cache;
       assign data_ar[6:4]                                    = axi_slave_ar_prot;
       assign data_ar[7]                                      = axi_slave_ar_lock;
+      assign data_ar[8]                                      = 1'b0;
       assign data_ar[10:9]                                   = axi_slave_ar_burst;
       assign data_ar[13:11]                                  = axi_slave_ar_size;
       assign data_ar[21:14]                                  = axi_slave_ar_len;
@@ -212,7 +214,6 @@ module axi_slice_dc_slave
       assign axi_master_ar_id                                = data_async_ar[29+ADDR_ID_WIDTH:30+AXI_ADDR_WIDTH];
       assign axi_master_ar_user                              = data_async_ar[29+ADDR_USER_ID_WIDTH:30+ADDR_ID_WIDTH];
 
-
       assign data_async_r[0]                                    = axi_master_r_last;
       assign data_async_r[2:1]                                  = axi_master_r_resp;
       assign data_async_r[2+AXI_DATA_WIDTH:3]                   = axi_master_r_data;
@@ -227,7 +228,7 @@ module axi_slice_dc_slave
       assign data_w[0]                                      = axi_slave_w_last;
       assign data_w[AXI_DATA_WIDTH:1]                       = axi_slave_w_data;
       assign data_w[DATA_STRB_WIDTH:1+AXI_DATA_WIDTH]       = axi_slave_w_strb;
-      assign data_w[DATA_USER_STRB_WIDTH:1+DATA_STRB_WIDTH] = axi_slave_w_user;   // LHS  [:73]                   RHS --> AXI_USER_WIDTH = 6 bit
+      assign data_w[DATA_USER_STRB_WIDTH:1+DATA_STRB_WIDTH] = axi_slave_w_user;   // LHS  [:73]              RHS --> AXI_USER_WIDTH = 6 bit
       assign axi_master_w_last                              = data_async_w[0];
       assign axi_master_w_data                              = data_async_w[AXI_DATA_WIDTH:1];
       assign axi_master_w_strb                              = data_async_w[DATA_STRB_WIDTH:1+AXI_DATA_WIDTH];
