@@ -29,6 +29,7 @@ module axi_slice_dc_master
     input  logic [2:0]                  axi_slave_aw_size,
     input  logic [1:0]                  axi_slave_aw_burst,
     input  logic                        axi_slave_aw_lock,
+    input  logic [5:0]                  axi_slave_aw_atop,
     input  logic [3:0]                  axi_slave_aw_cache,
     input  logic [3:0]                  axi_slave_aw_qos,
     input  logic [AXI_ID_WIDTH-1:0]     axi_slave_aw_id,
@@ -86,6 +87,7 @@ module axi_slice_dc_master
     output logic [2:0]                  axi_master_aw_size,
     output logic [1:0]                  axi_master_aw_burst,
     output logic                        axi_master_aw_lock,
+    output logic [5:0]                  axi_master_aw_atop,
     output logic [3:0]                  axi_master_aw_cache,
     output logic [3:0]                  axi_master_aw_qos,
     output logic [AXI_ID_WIDTH-1:0]     axi_master_aw_id,
@@ -143,7 +145,7 @@ module axi_slice_dc_master
 
       localparam USER_ID_WIDTH        = AXI_USER_WIDTH + AXI_ID_WIDTH;
 
-      localparam WIDTH_FIFO_AW        = 30+ADDR_USER_ID_WIDTH;
+      localparam WIDTH_FIFO_AW        = 30+6+ADDR_USER_ID_WIDTH;
       localparam WIDTH_FIFO_AR        = 30+ADDR_USER_ID_WIDTH;
       localparam WIDTH_FIFO_W         = 1+DATA_USER_STRB_WIDTH;
       localparam WIDTH_FIFO_R         = 3+DATA_USER_ID_WIDTH;
@@ -181,6 +183,7 @@ module axi_slice_dc_master
       assign data_async_aw[29+AXI_ADDR_WIDTH:30]                   = axi_slave_aw_addr;
       assign data_async_aw[29+ADDR_ID_WIDTH:30+AXI_ADDR_WIDTH]     = axi_slave_aw_id;
       assign data_async_aw[29+ADDR_USER_ID_WIDTH:30+ADDR_ID_WIDTH] = axi_slave_aw_user;
+      assign data_async_aw[35+ADDR_USER_ID_WIDTH:30+ADDR_USER_ID_WIDTH] = axi_slave_aw_atop;
       assign axi_master_aw_cache                                   = data_aw[3:0];
       assign axi_master_aw_prot                                    = data_aw[6:4];
       assign axi_master_aw_lock                                    = data_aw[7];
@@ -192,6 +195,7 @@ module axi_slice_dc_master
       assign axi_master_aw_addr                                    = data_aw[29+AXI_ADDR_WIDTH:30];
       assign axi_master_aw_id                                      = data_aw[29+ADDR_ID_WIDTH:30+AXI_ADDR_WIDTH];
       assign axi_master_aw_user                                    = data_aw[29+ADDR_USER_ID_WIDTH:30+ADDR_ID_WIDTH];
+      assign axi_master_aw_atop                                    = data_aw[35+ADDR_USER_ID_WIDTH:30+ADDR_USER_ID_WIDTH];
 
       assign data_async_ar[3:0]                                    = axi_slave_ar_cache;
       assign data_async_ar[6:4]                                    = axi_slave_ar_prot;
