@@ -34,8 +34,13 @@ module axi_slice_dc_slave_wrap
    logic s_r_ready;
 
    logic s_aw_ready;
+   logic s_aw_valid;
+
    logic s_ar_ready;
+   logic s_ar_valid;
+
    logic s_w_ready;
+   logic s_w_valid;
 
    assign axi_slave.b_valid = isolate_i ? 1'b0 : s_b_valid;
    assign s_b_ready = isolate_i ? 1'b1 : axi_slave.b_ready;
@@ -46,6 +51,10 @@ module axi_slice_dc_slave_wrap
    assign axi_slave.aw_ready = isolate_i ? 1'b0 : s_aw_ready;
    assign axi_slave.ar_ready = isolate_i ? 1'b0 : s_ar_ready;
    assign axi_slave.w_ready  = isolate_i ? 1'b0 : s_w_ready;
+
+   assign s_aw_valid = ~isolate_i & axi_slave.aw_valid;
+   assign s_ar_valid = ~isolate_i & axi_slave.ar_valid;
+   assign s_w_valid  = ~isolate_i & axi_slave.w_valid;
 
    axi_slice_dc_slave
    #(
@@ -61,8 +70,8 @@ module axi_slice_dc_slave_wrap
       .rst_ni(rst_ni),
       .test_cgbypass_i          ( test_cgbypass_i                         ),
 
-
-      .axi_slave_aw_valid(axi_slave.aw_valid),
+      .axi_slave_aw_valid(s_aw_valid),
+     
       .axi_slave_aw_addr(axi_slave.aw_addr),
       .axi_slave_aw_prot(axi_slave.aw_prot),
       .axi_slave_aw_region(axi_slave.aw_region),
@@ -76,7 +85,7 @@ module axi_slice_dc_slave_wrap
       .axi_slave_aw_user(axi_slave.aw_user),
       .axi_slave_aw_ready(s_aw_ready),
 
-      .axi_slave_ar_valid(axi_slave.ar_valid),
+      .axi_slave_ar_valid(s_ar_valid),
       .axi_slave_ar_addr(axi_slave.ar_addr),
       .axi_slave_ar_prot(axi_slave.ar_prot),
       .axi_slave_ar_region(axi_slave.ar_region),
@@ -90,7 +99,7 @@ module axi_slice_dc_slave_wrap
       .axi_slave_ar_user(axi_slave.ar_user),
       .axi_slave_ar_ready(s_ar_ready),
 
-      .axi_slave_w_valid(axi_slave.w_valid),
+      .axi_slave_w_valid(s_w_valid),
       .axi_slave_w_data(axi_slave.w_data),
       .axi_slave_w_strb(axi_slave.w_strb),
       .axi_slave_w_user(axi_slave.w_user),
